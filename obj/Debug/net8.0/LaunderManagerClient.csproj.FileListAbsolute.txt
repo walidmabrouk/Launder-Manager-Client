@@ -1,0 +1,14 @@
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\bin\Debug\net8.0\LaunderManagerClient.exe
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\bin\Debug\net8.0\LaunderManagerClient.deps.json
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\bin\Debug\net8.0\LaunderManagerClient.runtimeconfig.json
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\bin\Debug\net8.0\LaunderManagerClient.dll
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\bin\Debug\net8.0\LaunderManagerClient.pdb
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.AssemblyInfoInputs.cache
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.AssemblyInfo.cs
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.csproj.CoreCompileInputs.cache
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.dll
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\refint\LaunderManagerClient.dll
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.pdb
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.genruntimeconfig.cache
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\ref\LaunderManagerClient.dll
