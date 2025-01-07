@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LaunderManagerClient.Entities;
 using LaunderManagerClient.Converters;
 using LaverieClient.Services;
+using System.Net.WebSockets;
 
 namespace LaverieClient
 {
@@ -35,7 +36,7 @@ namespace LaverieClient
                         break;
 
                     case "2":
-                        ViewProprietorDetails();
+                        await ViewProprietorDetails();
                         break;
 
                     case "0":
@@ -104,45 +105,70 @@ namespace LaverieClient
 
         static async Task ViewProprietorDetails()
         {
-            Console.Clear();
             Console.WriteLine("View Proprietor Details:");
-
             string serverUrl = "ws://localhost:5049/api/proprietor-details";
             var webSocketManager = new WebSocketManager(serverUrl);
+            Console.Clear(); // Efface l'affichage précédent
+            Console.WriteLine("View Proprietor Details:");
 
             try
             {
                 await webSocketManager.ConnectAsync();
-                var proprietors = await webSocketManager.ReceiveAsync();
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("[INFO] Received Proprietors Data:");
-                Console.ResetColor();
-
-                foreach (var proprietor in proprietors)
+                // Boucle infinie pour recevoir les nouvelles données
+                while (true)
                 {
-                    Console.WriteLine("****************************************");
-                    Console.WriteLine($"\n  ID Proprietor: {proprietor.Id} ");
-                    Console.WriteLine($"  Proprietor Name: {proprietor.Name}");
-                    Console.WriteLine($"    Total Earnings: {proprietor.TotalEarnings}");
-
-                    foreach (var laundry in proprietor.Laundries)
+                    var proprietors = await webSocketManager.ReceiveAsync(); // Récupère les données actuelles
+                    Console.Clear();
+                    if (proprietors != null && proprietors.Count > 0) // Si des données sont reçues
                     {
-                        Console.WriteLine($"      Laundry Name: {laundry.Name} - Laundry Address: {laundry.Address} - (Earnings: {laundry.Earnings})");
+                        Console.Clear(); // Efface l'écran pour éviter les redondances
+                        Console.WriteLine("Fetching latest proprietor details...");
 
-                        foreach (var machine in laundry.Machines)
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine("[INFO] Received Proprietors Data:");
+                        Console.ResetColor();
+
+                        foreach (var proprietor in proprietors)
                         {
-                            Console.WriteLine($"       Machine ID: {machine.Id}  - Machine Type: {machine.Type} , Machine State: {machine.State} - Machine Earnings: {machine.Earnings}");
+                            Console.WriteLine("****************************************");
+                            Console.WriteLine($"\n  ID Proprietor: {proprietor.Id}");
+                            Console.WriteLine($"  Proprietor Name: {proprietor.Name}");
+                            Console.WriteLine($"    Total Earnings: {proprietor.TotalEarnings}");
+
+                            foreach (var laundry in proprietor.Laundries)
+                            {
+                                Console.WriteLine($"      Laundry Name: {laundry.Name} - Laundry Address: {laundry.Address} - (Earnings: {laundry.Earnings})");
+
+                                foreach (var machine in laundry.Machines)
+                                {
+                                    Console.WriteLine($"       Machine ID: {machine.Id}  - Machine Type: {machine.Type}, Machine State: {machine.State} - Machine Earnings: {machine.Earnings}");
+                                }
+                            }
                         }
+                        Console.WriteLine("==================================================================================================\n");
                     }
+                    else
+                    {
+                        // Si aucune donnée n'est reçue, on ne fait rien
+                        Console.WriteLine("No new data available, waiting for updates...");
+                    }
+
+                    await Task.Delay(1000); // Pause entre les cycles de mise à jour
                 }
-                Console.WriteLine("==================================================================================================\n");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+            finally
+            {
+                await webSocketManager.DisconnectAsync();
+            }
         }
+
+
+
 
 
 
