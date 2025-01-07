@@ -12,3 +12,4 @@ C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClie
 C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.pdb
 C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.genruntimeconfig.cache
 C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\ref\LaunderManagerClient.dll
+C:\Users\walid\OneDrive\Documents\Visual Studio 2022\Projects\LaunderManagerClient\LaunderManagerClient\obj\Debug\net8.0\LaunderManagerClient.sourcelink.json

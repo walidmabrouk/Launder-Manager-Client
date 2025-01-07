@@ -36,7 +36,7 @@ namespace LaverieClient
             Console.WriteLine("Message envoyé.");
         }
 
-        public async Task ReceiveAsync()
+        public async Task<List<Proprietor>> ReceiveAsync()
         {
             var buffer = new ArraySegment<byte>(new byte[4096]);
             var options = new JsonSerializerOptions
@@ -60,48 +60,21 @@ namespace LaverieClient
 
                         var message = Encoding.UTF8.GetString(ms.ToArray());
 
-                        try
-                        {
-                            var proprietors = JsonSerializer.Deserialize<List<Proprietor>>(message, options);
-
-                            if (proprietors != null)
-                            {
-                                foreach (var proprietor in proprietors)
-                                {
-                                    Console.WriteLine($"\nNom du propriétaire: {proprietor.Name}");
-                                    Console.WriteLine($"Total Earnings: {proprietor.TotalEarnings}");
-
-                                    foreach (var laundry in proprietor.Laundries)
-                                    {
-                                        Console.WriteLine($"  Laverie: {laundry.Name} (Earnings: {laundry.Earnings})");
-
-                                        foreach (var machine in laundry.Machines)
-                                        {
-                                            Console.WriteLine($"    Machine: {machine.Type}, Serial: {machine.SerialNumber}, State: {machine.State}");
-
-                                            foreach (var cycle in machine.Cycles)
-                                            {
-                                                Console.WriteLine($"      Cycle: {cycle.Name}, Price: {cycle.Price}, Duration: {cycle.Duration}");
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (JsonException ex)
-                        {
-                            Console.WriteLine($"Erreur lors de la désérialisation : {ex.Message}");
-                            Console.WriteLine("Message brut :");
-                            Console.WriteLine(message);
-                        }
+                        var proprietors = JsonSerializer.Deserialize<List<Proprietor>>(message, options);
+                        return proprietors ?? new List<Proprietor>();
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur dans ReceiveAsync : {ex.Message}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[ERROR] An error occurred in ReceiveAsync: {ex.Message}");
+                Console.ResetColor();
             }
+
+            return new List<Proprietor>(); // Return an empty list if there's an error
         }
+
 
         public async Task DisconnectAsync()
         {

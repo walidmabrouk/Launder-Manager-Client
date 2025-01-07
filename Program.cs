@@ -1,19 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 using LaunderManagerClient.Entities;
 using LaunderManagerClient.Converters;
-using System.Threading.Tasks;
 using LaverieClient.Services;
-using LaunderManagerClient.Entities;
 
 namespace LaverieClient
 {
     public class Program
     {
+        private static WebSocketManager _webSocketManager;
+        private const string ServerUrl = "ws://localhost:5049/api/configuration";
+
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Initial Setup: Laundry Proprietors");
+            _webSocketManager = new WebSocketManager(ServerUrl);
+
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Laundry Management System");
+                Console.WriteLine("1. Add Configuration");
+                Console.WriteLine("2. View Proprietor Details");
+                Console.WriteLine("0. Exit");
+
+                Console.Write("\nSelect an option: ");
+                string choice = Console.ReadLine()?.Trim();
+
+                switch (choice)
+                {
+                    case "1":
+                        await AddConfiguration();
+                        break;
+
+                    case "2":
+                        ViewProprietorDetails();
+                        break;
+
+                    case "0":
+                        Console.WriteLine("Exiting...");
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
+
+                Console.WriteLine("\nPress Enter to return to the main menu...");
+                Console.ReadLine();
+            }
+        }
+
+        static async Task AddConfiguration()
+        {
+            Console.Clear();
+            Console.WriteLine("Add Configuration:");
 
             var proprietor = new Proprietor
             {
@@ -25,7 +67,7 @@ namespace LaverieClient
 
             if (!ValidationService.ValidateProprietor(proprietor))
             {
-                Console.WriteLine("Invalid input data. Setup aborted.");
+                Console.WriteLine("Invalid input data. Configuration aborted.");
                 return;
             }
 
@@ -49,22 +91,60 @@ namespace LaverieClient
             Console.WriteLine("\nSerialized Data:");
             Console.WriteLine(jsonData);
 
-            string serverUrl = "ws://localhost:5049/api/configuration";
-            var webSocketManager = new WebSocketManager(serverUrl);
-
             try
             {
-                await webSocketManager.ConnectAsync();
-                await webSocketManager.SendAsync(jsonData);
-                await webSocketManager.ReceiveAsync();
-                
+                await _webSocketManager.ConnectAsync();
+                await _webSocketManager.SendAsync(jsonData);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
-            Console.ReadLine();
         }
+
+        static async Task ViewProprietorDetails()
+        {
+            Console.Clear();
+            Console.WriteLine("View Proprietor Details:");
+
+            string serverUrl = "ws://localhost:5049/api/proprietor-details";
+            var webSocketManager = new WebSocketManager(serverUrl);
+
+            try
+            {
+                await webSocketManager.ConnectAsync();
+                var proprietors = await webSocketManager.ReceiveAsync();
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("[INFO] Received Proprietors Data:");
+                Console.ResetColor();
+
+                foreach (var proprietor in proprietors)
+                {
+                    Console.WriteLine("****************************************");
+                    Console.WriteLine($"\n  ID Proprietor: {proprietor.Id} ");
+                    Console.WriteLine($"  Proprietor Name: {proprietor.Name}");
+                    Console.WriteLine($"    Total Earnings: {proprietor.TotalEarnings}");
+
+                    foreach (var laundry in proprietor.Laundries)
+                    {
+                        Console.WriteLine($"      Laundry Name: {laundry.Name} - Laundry Address: {laundry.Address} - (Earnings: {laundry.Earnings})");
+
+                        foreach (var machine in laundry.Machines)
+                        {
+                            Console.WriteLine($"       Machine ID: {machine.Id}  - Machine Type: {machine.Type} , Machine State: {machine.State} - Machine Earnings: {machine.Earnings}");
+                        }
+                    }
+                }
+                Console.WriteLine("==================================================================================================\n");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
+
 
         static string ReadInput(string prompt)
         {
