@@ -10,14 +10,14 @@ using LaunderManagerClient.Entities;
 using LaunderManagerClient.Converters;
 using LaunderManagerClient.Entities;
 
-namespace LaverieClient
+namespace LaunderManagerClient.Services
 {
-    public class WebSocketManager
+    public class WebSocketService
     {
         private readonly string _serverUrl;
         private readonly ClientWebSocket _client;
 
-        public WebSocketManager(string serverUrl)
+        public WebSocketService(string serverUrl)
         {
             _serverUrl = serverUrl;
             _client = new ClientWebSocket();

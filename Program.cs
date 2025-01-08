@@ -6,17 +6,18 @@ using LaunderManagerClient.Entities;
 using LaunderManagerClient.Converters;
 using LaverieClient.Services;
 using System.Net.WebSockets;
+using LaunderManagerClient.Services;
 
 namespace LaverieClient
 {
     public class Program
     {
-        private static WebSocketManager _webSocketManager;
+        private static WebSocketService _webSocketManager;
         private const string ServerUrl = "ws://localhost:5049/api/configuration";
 
         static async Task Main(string[] args)
         {
-            _webSocketManager = new WebSocketManager(ServerUrl);
+            _webSocketManager = new WebSocketService(ServerUrl);
 
             while (true)
             {
@@ -107,7 +108,7 @@ namespace LaverieClient
         {
             Console.WriteLine("View Proprietor Details:");
             string serverUrl = "ws://localhost:5049/api/proprietor-details";
-            var webSocketManager = new WebSocketManager(serverUrl);
+            var webSocketManager = new WebSocketService(serverUrl);
             Console.Clear(); // Efface l'affichage précédent
             Console.WriteLine("View Proprietor Details:");
 
@@ -134,11 +135,10 @@ namespace LaverieClient
                             Console.WriteLine("****************************************");
                             Console.WriteLine($"\n  ID Proprietor: {proprietor.Id}");
                             Console.WriteLine($"  Proprietor Name: {proprietor.Name}");
-                            Console.WriteLine($"    Total Earnings: {proprietor.TotalEarnings}");
 
                             foreach (var laundry in proprietor.Laundries)
                             {
-                                Console.WriteLine($"      Laundry Name: {laundry.Name} - Laundry Address: {laundry.Address} - (Earnings: {laundry.Earnings})");
+                                Console.WriteLine($"      Laundry Name: {laundry.Name} - Laundry Address: {laundry.Address}");
 
                                 foreach (var machine in laundry.Machines)
                                 {
